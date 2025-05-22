@@ -1,11 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair:ital,opsz,wght@0,5..1200,300..900;1,5..1200,300..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 @import "tailwindcss";
 
-@plugin "daisyui";
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *));
+
+@layer base {
+    html {
+        @apply transition-colors duration-300
+    }
+
+    body {
+        @apply bg-text dark:bg-background text-background dark:text-text
+    }
+}
 
 @theme {
     --font-playfair: "Playfair", serif;
     --font-poppins: "Poppins", sans-serif;
     --font-roboto: "Roboto", sans-serif;
+
+    --color-text: oklch(97.18% 0.003 128.49);
+    --color-background: oklch(12.29% 0.014 127.62);
+    --color-primary: oklch(71.78% 0.166 133.06);
+    --color-secondary: oklch(49.65% 0.127 133.89);
+    --color-accent: oklch(68.61% 0.196 135.33);
+}
+
+@plugin "daisyui" {
+    themes: false;
 }
