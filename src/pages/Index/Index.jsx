@@ -1,11 +1,13 @@
 import React from 'react'
-import Navbar from '../../components/Navbar'
+// import Navbar from '../../components/Navbar'
+import Hero from '../Hero/Hero'
+import About from '../About/About'
 
 function Index() {
     return (
         <div>
-            <Navbar />
-            <h1>Hello, I'm a Milan Sony!</h1>
+            <Hero />
+            <About />
         </div>
     )
 }
