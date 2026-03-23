@@ -4,62 +4,16 @@ import { Mail } from "lucide-react";
 
 function About() {
     return (
-        <section className="py-20 px-6 bg-background text-foreground">
+        <section className="py-24 px-6">
+            <div className="max-w-3xl mx-auto text-left">
 
-            <div className="max-w-4xl mx-auto">
-
-                {/* Heading */}
-                <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-10">
-                    Who am I?
+                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-10">
+                    🤷 Who am I?
                 </h2>
 
-                {/* Content Card */}
-                <Card className="border-none shadow-none bg-muted/40">
-                    <CardContent className="p-6 sm:p-8">
-
-                        <p className="text-sm sm:text-base leading-relaxed text-muted-foreground">
-                            Hi 👋🏻, I'm{" "}
-                            <span className="font-semibold text-foreground">
-                                Milan Sony
-                            </span>
-                            , a passionate and dedicated developer from{" "}
-                            <span className="font-semibold text-foreground">
-                                INDIA 🇮🇳
-                            </span>
-                            , striving to excel as a{" "}
-                            <span className="font-medium text-foreground">
-                                full-stack developer
-                            </span>{" "}
-                            while maintaining my well-being ✨.
-                            <br /><br />
-                            With a strong academic foundation in computer applications and a love for{" "}
-                            <span className="font-medium text-foreground">
-                                web design
-                            </span>
-                            ,{" "}
-                            <span className="font-medium text-foreground">
-                                web development
-                            </span>{" "}
-                            and{" "}
-                            <span className="font-medium text-foreground">
-                                IoT
-                            </span>
-                            , I'm excited to connect with like-minded individuals who share my enthusiasm 🥂.
-                            <br /><br />
-                            When I'm not immersed in coding, I recharge with sleep 💤, ready to tackle new challenges 💪🏻.
-                            <br /><br />
-                            Feel free to reach out to me at{" "}
-                            <a
-                                href="mailto:milansonyofficial@gmail.com"
-                                className="inline-flex items-center gap-1 font-medium text-primary hover:underline"
-                            >
-                                milansonyofficial@gmail.com
-                            </a>{" "}
-                            to discuss my coding journey, offer guidance, or simply show support 😄.
-                        </p>
-
-                    </CardContent>
-                </Card>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
+                    A self-taught developer from India 🇮🇳. I'm working on becoming the best developer I can be by maintaining a healthy work-life balance ✨. With a strong academic foundation in computer applications and a love for web design, web development, and IoT 🚀, I'm excited to connect with like-minded folks 🥂. Feel free to reach out to me at milansonyofficial@gmail.com to discuss coding 💻, get guidance 📚, chat 😄, or just grab a virtual coffee ☕ Hahaha... 😂
+                </p>
 
             </div>
         </section>

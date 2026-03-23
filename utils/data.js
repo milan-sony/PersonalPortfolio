@@ -18,22 +18,40 @@ export const contact = {
     location: "Changanacherry, Kottayam, Kerala, India",
     links: [
         {
-            label: "📧 Mail",
+            label: "Mail",
             url: "mailto:milanfrom2001@gmail.com",
             value: "milansonyofficial@gmail.com"
         },
         {
-            label: "📞 Phone",
+            label: "Phone",
             url: "tel:+918075143465",
             value: "+91 8075143465"
         },
         {
-            label: "📍 Location",
+            label: "Location",
             value: "Changanacherry, Kottayam, Kerala, India"
         }
     ]
 };
 
+// Social media links
+export const socialLinks = [
+    {
+        label: "GitHub",
+        url: "https://github.com/milan-sony",
+        icon: "github"
+    },
+    {
+        label: "LinkedIn",
+        url: "https://www.linkedin.com/in/milan-sony-94b977261",
+        icon: "linkedin"
+    },
+    {
+        label: "Instagram",
+        url: "https://www.instagram.com/milansony_",
+        icon: "instagram"
+    }
+];
 
 // Education details
 export const educations = [
@@ -93,7 +111,7 @@ export const skills = [
         items: ["Windows", "Linux"]
     },
     {
-        category: "Other",
+        category: "Other's",
         emoji: "🔩",
         items: ["Git", "GitHub", "Docker", "Arduino", "IoT", "WSL 2", "Microsoft Office", "Notion", "Photoshop"]
     }

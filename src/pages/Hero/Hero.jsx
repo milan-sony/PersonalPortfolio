@@ -1,59 +1,63 @@
 import React from 'react'
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Mail } from "lucide-react";
+import { ThemeToggle } from '../../components/theme-toggle';
+import ScrollToTop from '../../components/ScrollToTop';
 
 function Hero() {
     return (
-        <section className="min-h-dvh flex items-center justify-center bg-background text-foreground px-6">
+        <>
+            <section className="relative min-h-dvh flex items-center px-6">
 
-            <div className="max-w-4xl w-full text-center md:text-left">
-
-                {/* Top small intro */}
-                <p className="text-sm md:text-base text-muted-foreground mb-4">
-                    👋 Hi, I'm
-                </p>
-
-                {/* Name */}
-                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight">
-                    Milan Sony
-                </h1>
-
-                {/* Role */}
-                <h2 className="mt-3 text-lg sm:text-xl md:text-2xl text-muted-foreground">
-                    Software Developer • MERN • React • IoT
-                </h2>
-
-                {/* Description */}
-                <p className="mt-6 max-w-xl text-sm sm:text-base text-muted-foreground">
-                    I build modern, scalable web applications with clean UI and great user experience.
-                </p>
-
-                {/* CTA Buttons */}
-                <div className="mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 sm:items-center">
-                    <Button className="w-full sm:w-auto">
-                        View Projects
-                    </Button>
-
-                    <Button variant="outline" className="w-full sm:w-auto">
-                        Download Resume
-                    </Button>
+                {/* Theme Toggle (Top Right) */}
+                <div className="absolute top-6 right-6">
+                    <ThemeToggle />
                 </div>
 
-                {/* Social Links */}
-                <div className="mt-8 flex justify-center md:justify-start gap-5 text-muted-foreground">
-                    <a href="#" className="hover:text-foreground transition">
-                        <Github size={20} />
-                    </a>
-                    <a href="#" className="hover:text-foreground transition">
-                        <Linkedin size={20} />
-                    </a>
-                    <a href="#" className="hover:text-foreground transition">
-                        <Mail size={20} />
-                    </a>
+                <div className="max-w-6xl mx-auto w-full">
+                    <div className="max-w-3xl">
+
+                        <p className="text-sm text-muted-foreground mb-4">
+                            👋 Hi, I'm
+                        </p>
+
+                        <h1 className="text-6xl sm:text-7xl md:text-8xl font-bold tracking-tight leading-tight">
+                            Milan Sony
+                        </h1>
+
+                        <h2 className="mt-4 text-base sm:text-lg text-muted-foreground">
+                            Software Developer | IoT Enthusiast
+                        </h2>
+
+                        <p className="mt-6 text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl">
+                            <span className="line-through">Everything</span> you need to know about me is here.
+                        </p>
+
+                        <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                            <Button asChild>
+                                <a href="#contact">Contact</a>
+                            </Button>
+                            <Button variant="outline" asChild>
+                                <a href="/Resume-Milan_Sony.pdf" target="_blank" rel="noopener noreferrer" download="Resume_MilanSony">
+                                    Download Resume
+                                </a>
+                            </Button>
+                        </div>
+
+                        <div className="mt-8 flex gap-5 text-muted-foreground">
+                            <Github className="hover:text-foreground cursor-pointer" />
+                            <Linkedin className="hover:text-foreground cursor-pointer" />
+                            <Mail className="hover:text-foreground cursor-pointer" />
+                        </div>
+
+                    </div>
                 </div>
 
-            </div>
-        </section>
+            </section>
+
+            <ScrollToTop />
+        </>
+
     )
 }
 
