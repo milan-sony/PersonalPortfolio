@@ -44,11 +44,11 @@ function Hero() {
                             </Button>
                         </div>
 
-                        <div className="mt-8 flex gap-5 text-muted-foreground">
+                        {/* <div className="mt-8 flex gap-5 text-muted-foreground">
                             <Github className="hover:text-foreground cursor-pointer" />
                             <Linkedin className="hover:text-foreground cursor-pointer" />
                             <Mail className="hover:text-foreground cursor-pointer" />
-                        </div>
+                        </div> */}
 
                     </div>
                 </div>

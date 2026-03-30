@@ -5,7 +5,7 @@ import { Mail } from "lucide-react";
 function About() {
     return (
         <section className="py-24 px-6">
-            <div className="max-w-3xl mx-auto text-left">
+            <div className="max-w-6xl mx-auto text-left">
 
                 <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-10">
                     🤷 Who am I?

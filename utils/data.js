@@ -65,7 +65,7 @@ export const educations = [
     {
         degree: "Bachelor of Computer Applications",
         years: "2019-2022",
-        institution: "Kristu Jayoti College of Management & Technology, Chethipuzha",
+        institution: "Kristu Jyoti College of Management & Technology, Chethipuzha",
         university: "Mahatma Gandhi University",
         emoji: "🧑🏻"
     },
@@ -120,8 +120,20 @@ export const skills = [
 // Work Experience
 export const experiences = [
     {
-        title: "Software Developer",
-        years: "2023-2024",
+        title: "Software Developer | Full-time (Remote)",
+        years: "July 2025 - Present",
+        company: "Johnson & Johnson",
+        url: "https://www.jnj.com",
+        emoji: "👩🏻‍💻",
+        achievements: [
+            "Worked at Johnson & Johnson on behalf of Sisincorp, collaborating with cross-functional teams to meet project requirements.",
+            "Contributed to a high-impact project, epi.jnj, a JNJ platform configured with GS1 resolver and standards, enabling users to scan a GTIN to access product traceability information. Also worked on the eLabel Admin platform, which helps configure GTINs owned by JNJ to the resolver.",
+            "Utilised Agile methodologies, participating in daily stand-ups, sprints, and review sessions, alongside version controltools like Git and project management tools like Jira, ensuring timely delivery and maintaining high-quality standards."
+        ]
+    },
+    {
+        title: "Software Developer | Full-time (On-site)",
+        years: "May 2024 - June 2025",
         company: "Manappuram Finance Limited",
         url: "https://www.manappuram.com",
         emoji: "👩🏻‍💻",
@@ -132,24 +144,24 @@ export const experiences = [
         ]
     },
     {
-        title: "Community Lead",
-        years: "2023-2024",
-        company: "Inovus Labs IEDC",
-        url: "https://inovuslabs.org",
-        emoji: "🤝🏻",
-        achievements: [
-            "Coordinate strategies and initiatives, set and implement community objectives, and guide junior team members."
-        ]
-    },
-    {
         title: "Mentor",
-        years: "2024-Present",
+        years: "March 2024 - Present",
         company: "Inovus Labs IEDC",
         url: "https://inovuslabs.org",
         emoji: "🙋🏻‍♂️",
         achievements: [
             "Led diverse projects and events, managing teams for successful outcomes while nurturing individual growth.",
             "Provided creative support for InoRa - The Inovus Radio Spotify Podcast."
+        ]
+    },
+    {
+        title: "Community Lead",
+        years: "May 2023 - March 2024",
+        company: "Inovus Labs IEDC",
+        url: "https://inovuslabs.org",
+        emoji: "🤝🏻",
+        achievements: [
+            "Coordinate strategies and initiatives, set and implement community objectives, and guide junior team members."
         ]
     }
 ];
