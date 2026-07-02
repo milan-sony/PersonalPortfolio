@@ -12,7 +12,7 @@ function About() {
                 </h2>
 
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    A self-taught developer from India 🇮🇳. I'm working on becoming the best developer I can be by maintaining a healthy work-life balance ✨. With a strong academic foundation in computer applications and a love for web design, web development, and IoT 🚀, I'm excited to connect with like-minded folks 🥂. Feel free to reach out to me at milansonyofficial@gmail.com to discuss coding 💻, get guidance 📚, chat 😄, or just grab a virtual coffee ☕ Hahaha... 😂
+                    I'm a self-taught developer and IoT enthusiast from India 🇮🇳. I strive to become a professional in everything I do while maintaining a healthy work-life balance ✨. I have a passion for technology and enjoy going to the gym 💪. With a solid academic background in computer applications, I love web design, web development, and IoT 🚀. In my free time, I listen to music 🎧, watch movies 🍿, go for walks 🚶, or catch up on sleep 💤. I'm eager to connect with like-minded individuals 🥂. Feel free to reach out to me at milansonyofficial@gmail.com to discuss coding 💻, seek guidance 📚, chat 😄, or just grab a virtual coffee ☕ Hahaha... 😂
                 </p>
 
             </div>
