@@ -171,43 +171,50 @@ export const projects = [
     {
         name: "Kanban Tasks",
         description: "A collaborative task management application that has the functionalities to schedule tasks among friends and ourselves using the efficient Kanban system, similar to Trello and Jira Boards, built with the MERN Stack.",
-        stack: ["Node.js", "React.js", "TailwindCss", "Express.js", "Socket.io"],
-        demoUrl: "https://milansony.vercel.app/",
-        githubUrl: "https://github.com/milan-sony/mailer.git"
+        stack: ["Node.js", "React.js", "TailwindCss", "Express.js", "Socket.io", "MongoDB"],
+        demoUrl: "",
+        githubUrl: "https://github.com/milan-sony/KanbanTasks.git"
+    },
+    {
+        name: "StatusCast",
+        description: "StatusCast is a fun and easy-to-use app for everyone whether you're part of a remote team, working in a co-working space, or just keeping in touch with friends and family! This cross-platform app lets you share your current status, mood, or availability.",
+        stack: ["Node.js", "React.js", "TailwindCss", "Express.js", "MongoDB", "zustand"],
+        demoUrl: "https://statuscast.onrender.com",
+        githubUrl: "https://github.com/milan-sony/StatusCast"
     },
     {
         name: "Mailer",
         description: "A simple yet flexible email automation platform using the MERN stack that can be customized based on the needs of the company.",
         stack: ["Node.js", "React.js", "TailwindCss", "Express.js", "Nodemailer"],
-        demoUrl: "https://milansony.vercel.app/",
-        githubUrl: "https://github.com/milan-sony/mailer.git"
+        demoUrl: "",
+        githubUrl: "https://github.com/milan-sony/mailer"
     },
     {
         name: "ChatApp",
         description: "A chat application build on MERN Stack with minimalist design in which users can send messages in real-time with other's.",
         stack: ["Node.js", "React.js", "TailwindCss", "Express.js", "MongoDB", "Zustand", "socket.io"],
-        demoUrl: "https://milansony.vercel.app/",
-        githubUrl: "https://github.com/milan-sony/ChatApp.git"
+        demoUrl: "",
+        githubUrl: "https://github.com/milan-sony/ChatApp"
     },
     {
         name: "Task Tracker",
         description: "A simple task tracking application build with React.js.",
         stack: ["React.js", "TailwindCSS"],
-        demoUrl: "https://milansony.vercel.app/",
-        githubUrl: "https://github.com/milan-sony/task-tracker.git"
+        demoUrl: "",
+        githubUrl: "https://github.com/milan-sony/task-tracker"
     },
     {
         name: "Inovus Digital",
         description: "An attempt to showcase digitally, what's going on at Inovus Labs. Something similar to Discord Rich Presence or Tinkerspace Digital, but way cooler. Build with Node.js, Vue.js and MongoDB.",
         stack: ["Node.js", "Express.js", "Vue.js"],
-        demoUrl: "https://milansony.vercel.app/",
-        githubUrl: "https://github.com/milan-sony/inovus_digital.git"
+        demoUrl: "",
+        githubUrl: "https://github.com/milan-sony/inovus_digital"
     },
     {
         name: "E-commerce Application",
         description: "An E-Commerce Application build with Node.js, Express.js, Handlebars, AJAX and MongoDB.",
         stack: ["Node.JS", "Express.JS", "Handlebars", "MongoDB"],
-        demoUrl: "https://milansony.vercel.app/",
+        demoUrl: "",
         githubUrl: "https://github.com/milan-sony/e-commerce_application"
     }
 ];
