@@ -1,17 +1,54 @@
 // Navbar menus
 export const navbarLinks = [
-    { name: "Home", to: "/home" },
-    { name: "Profile", to: "/profile" },
+    { name: "About", to: "#about" },
+    { name: "Education", to: "#education" },
+    { name: "Skills", to: "#skills" },
+    { name: "Experience", to: "#experience" },
+    { name: "Projects", to: "#projects" },
+    { name: "Contact", to: "#contact" },
 ];
+
+// Search engines and link previews. vite.config.js reads this at build time
+// to fill in the page head, robots.txt and sitemap.xml.
+export const seo = {
+    siteUrl: "https://personal-portfolio-plum-sigma-60.vercel.app",
+    title: "Milan Sony | Software Developer and IoT Enthusiast",
+    description: "Portfolio of Milan Sony, a software developer and IoT enthusiast from Kerala, India. Experience, projects, skills and contact details.",
+    keywords: ["Milan Sony", "Software Developer", "Web Developer", "IoT", "React", "Node.js", "MERN", "Kerala", "India", "Portfolio"],
+    image: "/og-image.png"
+};
 
 // Personal details
 export const personalDetails = {
     name: "Milan Sony",
-    title: "Software Developer",
-    description: "A passionate software developer with experience in building web applications."
+    title: "Software Developer and IoT Enthusiast",
+    description: "A passionate software developer with experience in building web applications.",
+    // the first part of the tagline is shown struck through
+    tagline: {
+        struck: "Everything",
+        rest: "you need to know about me is here."
+    },
+    basedIn: "Kerala, India",
+    timeZone: "Asia/Kolkata",
+    timeZoneLabel: "IST",
+    resume: {
+        file: "/Resume-Milan_Sony.pdf",
+        downloadName: "Resume_MilanSony"
+    }
+};
+
+// About section. The closing line with the mail and phone links is added from `contact`.
+export const about = {
+    heading: "Who am I?",
+    lead: "I'm a simple human being, a self-taught, passionate, and dedicated developer from India who is trying to become good at everything I do while maintaining a healthy work-life balance.",
+    paragraphs: [
+        "I have a strong academic background in computer applications and a love for web design, web development, and IoT. I'm always excited to connect with like-minded individuals who share my interests.",
+        "I like to listen to music, hit the gym, watch movies, go for walks, or catch up on sleep. Yeah, these are the things I do."
+    ]
 };
 
 // Contact information
+// links with the label Mail, Phone, Location or Website get their own icon, others a generic one
 export const contact = {
     email: "milansonyofficial@gmail.com",
     phone: "+91 8075143465",
@@ -35,6 +72,7 @@ export const contact = {
 };
 
 // Social media links
+// icon: github, linkedin, instagram, twitter, youtube, facebook (anything else gets a globe)
 export const socialLinks = [
     {
         label: "GitHub",
@@ -111,7 +149,7 @@ export const skills = [
         items: ["Windows", "Linux"]
     },
     {
-        category: "Other's",
+        category: "Others",
         emoji: "🔩",
         items: ["Git", "GitHub", "Docker", "Arduino", "IoT", "WSL 2", "Microsoft Office", "Notion", "Photoshop"]
     }

@@ -1,45 +1,40 @@
 import React from 'react'
-import { Card, CardContent } from "@/components/ui/card";
+import Section from '../../components/Section';
+import Reveal from '../../components/Reveal';
 import { skills } from "../../../utils/data";
 
 function Skills() {
     return (
-        <section className="py-24 px-6">
-            <div className="max-w-6xl mx-auto">
+        <Section id="skills" title="Skills">
 
-                <div className="text-left mb-14">
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-                        🧩 Skills
-                    </h2>
-                </div>
+            <div className="border-b border-border">
+                {skills.map((skill, i) => (
+                    <Reveal
+                        key={i}
+                        delay={i * 60}
+                        className="grid gap-x-8 gap-y-3 border-t border-border py-6 sm:grid-cols-[11rem_1fr]"
+                    >
 
-                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {skills.map((skill, i) => (
-                        <Card key={i} className="border border-border/30 hover:border-border/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-                            <CardContent className="p-6 sm:p-6">
+                        <h3 className="text-sm sm:text-base font-medium sm:pt-1">
+                            {skill.category}
+                        </h3>
 
-                                <div className="flex items-center gap-3 mb-5">
-                                    {/* <span className="text-xl">{skill.emoji}</span> */}
-                                    <h3 className="text-lg sm:text-xl font-semibold">
-                                        {skill.category}
-                                    </h3>
-                                </div>
+                        <ul className="flex flex-wrap gap-2">
+                            {skill.items.map((item, j) => (
+                                <li
+                                    key={j}
+                                    className="rounded-full border border-border px-3.5 py-1.5 text-sm text-muted-foreground transition-colors duration-300 hover:border-signal hover:text-foreground"
+                                >
+                                    {item}
+                                </li>
+                            ))}
+                        </ul>
 
-                                <div className="flex flex-wrap gap-2">
-                                    {skill.items.map((item, j) => (
-                                        <span key={j} className="px-3 py-1 text-xs rounded-full bg-muted text-muted-foreground">
-                                            {item}
-                                        </span>
-                                    ))}
-                                </div>
-
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-
+                    </Reveal>
+                ))}
             </div>
-        </section>
+
+        </Section>
     )
 }
 

@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react"
 
-type Theme = "dark" | "light" | "system"
+// "auto" follows the visitor's clock, "system" follows their device setting
+type Theme = "dark" | "light" | "system" | "auto"
 
 type ThemeProviderProps = {
     children: React.ReactNode
@@ -14,26 +15,46 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-    theme: "system",
+    theme: "auto",
     setTheme: () => null,
 }
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+// Daytime runs from 6am to 6pm. index.html repeats these hours in its pre-paint script.
+export const DAY_STARTS = 6
+export const DAY_ENDS = 18
+
+const themeForHour = (date = new Date()) =>
+    date.getHours() >= DAY_STARTS && date.getHours() < DAY_ENDS ? "light" : "dark"
+
 export function ThemeProvider({
     children,
-    defaultTheme = "system",
+    defaultTheme = "auto",
     storageKey = "vite-ui-theme",
     ...props
 }: ThemeProviderProps) {
-    const [theme, setTheme] = useState<Theme>(
-        () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-    )
+    const [theme, setTheme] = useState<Theme>(() => {
+        const stored = localStorage.getItem(storageKey) as Theme
+        return ["dark", "light", "system", "auto"].includes(stored) ? stored : defaultTheme
+    })
 
     useEffect(() => {
         const root = window.document.documentElement
 
-        root.classList.remove("light", "dark")
+        const apply = (resolved: "light" | "dark") => {
+            if (root.classList.contains(resolved)) return
+            root.classList.remove("light", "dark")
+            root.classList.add(resolved)
+        }
+
+        if (theme === "auto") {
+            apply(themeForHour())
+
+            // a page left open over sunrise or sunset switches within the minute
+            const timer = setInterval(() => apply(themeForHour()), 60 * 1000)
+            return () => clearInterval(timer)
+        }
 
         if (theme === "system") {
             const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
@@ -41,17 +62,19 @@ export function ThemeProvider({
                 ? "dark"
                 : "light"
 
-            root.classList.add(systemTheme)
+            apply(systemTheme)
             return
         }
 
-        root.classList.add(theme)
+        apply(theme)
     }, [theme])
 
     const value = {
         theme,
         setTheme: (theme: Theme) => {
-            localStorage.setItem(storageKey, theme)
+            // nothing is stored for "auto", so it stays the default for that visitor
+            if (theme === "auto") localStorage.removeItem(storageKey)
+            else localStorage.setItem(storageKey, theme)
             setTheme(theme)
         },
     }

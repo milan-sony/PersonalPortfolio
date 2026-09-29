@@ -1,0 +1,211 @@
+/*
+  Seasonal palettes. Each season sets a handful of seed colours for the light
+  and the dark theme; everything else is derived from those seeds below.
+  The `html` prefix keeps these ahead of the base tokens in index.css.
+*/
+
+html[data-season] {
+  --card: var(--surface);
+  --card-foreground: var(--foreground);
+  --popover: var(--surface);
+  --popover-foreground: var(--foreground);
+  --primary: var(--signal);
+  --secondary: var(--surface-2);
+  --secondary-foreground: var(--foreground);
+  --muted: var(--surface-2);
+  --accent: var(--surface-2);
+  --accent-foreground: var(--foreground);
+  --ring: var(--signal);
+  --border: color-mix(in srgb, var(--foreground) 13%, transparent);
+  --input: color-mix(in srgb, var(--foreground) 17%, transparent);
+  --signal-soft: color-mix(in srgb, var(--signal) 11%, transparent);
+  --nav-surface: color-mix(in srgb, var(--surface) 94%, transparent);
+}
+
+/* Spring: blossom pink */
+html[data-season="spring"] {
+  --background: #fbf3f6;
+  --foreground: #2a0f1e;
+  --surface: #ffffff;
+  --surface-2: #f4e1e9;
+  --muted-foreground: #7a5567;
+  --signal: #c2347a;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(42 15 30 / 20%);
+}
+
+html.dark[data-season="spring"] {
+  --background: #0f0710;
+  --foreground: #ffeaf3;
+  --surface: #190d1a;
+  --surface-2: #2a1529;
+  --muted-foreground: #b690a6;
+  --signal: #ff9ec4;
+  --primary-foreground: #2a0a18;
+  --lattice: rgb(255 200 225 / 22%);
+}
+
+/* Summer: mango gold */
+html[data-season="summer"] {
+  --background: #fdf6e6;
+  --foreground: #2b1a04;
+  --surface: #fffdf7;
+  --surface-2: #f6e8c6;
+  --muted-foreground: #7a6240;
+  --signal: #9c5005;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(43 26 4 / 20%);
+}
+
+html.dark[data-season="summer"] {
+  --background: #110b03;
+  --foreground: #fff3da;
+  --surface: #1c1306;
+  --surface-2: #2e200b;
+  --muted-foreground: #b9a27a;
+  --signal: #ffc24b;
+  --primary-foreground: #2b1a04;
+  --lattice: rgb(255 225 170 / 22%);
+}
+
+/* Monsoon: rain teal */
+html[data-season="monsoon"] {
+  --background: #ecf5f4;
+  --foreground: #06201f;
+  --surface: #ffffff;
+  --surface-2: #d8ebe9;
+  --muted-foreground: #4b6b69;
+  --signal: #0b7a70;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(6 32 31 / 20%);
+}
+
+html.dark[data-season="monsoon"] {
+  --background: #041011;
+  --foreground: #e0f7f4;
+  --surface: #0a1b1c;
+  --surface-2: #112c2d;
+  --muted-foreground: #86aeab;
+  --signal: #4fd8c4;
+  --primary-foreground: #03201c;
+  --lattice: rgb(170 235 225 / 22%);
+}
+
+/* Autumn: turning leaves */
+html[data-season="autumn"] {
+  --background: #fbf2ea;
+  --foreground: #2a1207;
+  --surface: #fffdfb;
+  --surface-2: #f3dfd0;
+  --muted-foreground: #7d5a48;
+  --signal: #b8431a;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(42 18 7 / 20%);
+}
+
+html.dark[data-season="autumn"] {
+  --background: #120805;
+  --foreground: #ffeee3;
+  --surface: #1d0f09;
+  --surface-2: #30190f;
+  --muted-foreground: #bb9684;
+  --signal: #ff8a4c;
+  --primary-foreground: #2a0f04;
+  --lattice: rgb(255 210 180 / 22%);
+}
+
+/* Pre-winter: morning mist */
+html[data-season="prewinter"] {
+  --background: #f4f1fb;
+  --foreground: #170f33;
+  --surface: #ffffff;
+  --surface-2: #e6e0f6;
+  --muted-foreground: #615884;
+  --signal: #5b45c9;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(23 15 51 / 20%);
+}
+
+html.dark[data-season="prewinter"] {
+  --background: #0a0716;
+  --foreground: #efeaff;
+  --surface: #130e25;
+  --surface-2: #1f183b;
+  --muted-foreground: #a097c2;
+  --signal: #b9a6ff;
+  --primary-foreground: #150c33;
+  --lattice: rgb(205 195 255 / 22%);
+}
+
+/* Winter: ice blue */
+html[data-season="winter"] {
+  --background: #f2f4fb;
+  --foreground: #0a0e2a;
+  --surface: #ffffff;
+  --surface-2: #e6e9f6;
+  --muted-foreground: #565c82;
+  --signal: #2438e0;
+  --primary-foreground: #ffffff;
+  --lattice: rgb(10 14 42 / 22%);
+}
+
+html.dark[data-season="winter"] {
+  --background: #060816;
+  --foreground: #e8ebff;
+  --surface: #0c1026;
+  --surface-2: #141a3c;
+  --muted-foreground: #8d94bc;
+  --signal: #5ce1ff;
+  --primary-foreground: #04101a;
+  --lattice: rgb(150 165 255 / 26%);
+}
+
+/* Emblem motion */
+.emblem-spin {
+  animation: emblem-spin 40s linear infinite;
+}
+
+.emblem-sway {
+  transform-origin: 50% 90%;
+  animation: emblem-sway 5s ease-in-out infinite;
+}
+
+.emblem-float {
+  animation: emblem-float 6s ease-in-out infinite;
+}
+
+@keyframes emblem-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes emblem-sway {
+  0%,
+  100% {
+    transform: rotate(-7deg);
+  }
+
+  50% {
+    transform: rotate(7deg);
+  }
+}
+
+@keyframes emblem-float {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(6px, -8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .emblem-spin,
+  .emblem-sway,
+  .emblem-float {
+    animation: none;
+  }
+}

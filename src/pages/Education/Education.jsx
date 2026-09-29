@@ -1,42 +1,46 @@
 import React from 'react'
-import { Card, CardContent } from "@/components/ui/card";
+import Section from '../../components/Section';
+import Reveal from '../../components/Reveal';
 import { educations } from "../../../utils/data";
 
 function Education() {
     return (
-        <section className="py-24 px-6">
-            <div className="max-w-6xl mx-auto">
+        <Section id="education" title="Education">
 
-                <div className="text-left mb-14">
-                    <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight">
-                        🎒 Education
-                    </h2>
-                </div>
+            <ol className="border-b border-border">
+                {educations.map((edu, i) => (
+                    <Reveal
+                        as="li"
+                        key={i}
+                        delay={i * 70}
+                        className="group grid gap-x-8 gap-y-1 border-t border-border py-6 sm:grid-cols-[8rem_1fr]"
+                    >
 
-                <div className="grid md:grid-cols-2 gap-6">
-                    {educations.map((edu, i) => (
-                        <Card key={i} className="border border-border/30 hover:border-border/60 transition">
-                            <CardContent className="p-6 sm:p-6">
+                        <span className="text-sm text-muted-foreground tabular-nums sm:pt-1 transition-colors duration-300 group-hover:text-signal">
+                            {edu.years}
+                        </span>
 
-                                <div className="flex justify-between mb-4">
-                                    <h3 className="text-lg sm:text-xl font-semibold">
-                                        {/* <span>{edu.emoji}</span> */}
-                                        {edu.degree}
-                                    </h3>
-                                    <span className="text-sm text-muted-foreground">{edu.years}</span>
-                                </div>
+                        <div>
+                            <h3 className="text-lg sm:text-xl font-medium tracking-tight">
+                                {edu.degree}
+                            </h3>
 
-                                <p className="text-sm sm:text-base text-muted-foreground mt-2">
-                                    {edu.institution}
+                            <p className="mt-1.5 text-sm sm:text-base text-muted-foreground">
+                                {edu.institution}
+                            </p>
+
+                            {edu.university && (
+                                <p className="text-sm text-muted-foreground">
+                                    {edu.university}
                                 </p>
+                            )}
+                        </div>
 
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                    </Reveal>
+                ))}
+            </ol>
 
-            </div>
-        </section>
+        </Section>
     )
 }
 

@@ -1,23 +1,47 @@
 import React from 'react'
-import { Card, CardContent } from "@/components/ui/card";
-import { Mail } from "lucide-react";
+import Section from '../../components/Section';
+import Reveal from '../../components/Reveal';
+import { about, contact } from "../../../utils/data";
 
 function About() {
+    const mail = contact.links.find((link) => link.label === "Mail");
+    const phone = contact.links.find((link) => link.label === "Phone");
+
     return (
-        <section className="py-24 px-6">
-            <div className="max-w-6xl mx-auto text-left">
+        <Section id="about" title={about.heading}>
 
-                <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-10">
-                    🤷 Who am I?
-                </h2>
-
-                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                    I'm a simple human being 👦, a self-taught, passionate, and dedicated developer from INDIA 🇮🇳 who is trying to become good at everything I do while maintaining a healthy work-life balance ⚖️✨. I have a strong academic background in computer applications 🎓 and a love for web design 🎨, web development 💻, and IoT 🧩. I'm always excited to connect with like-minded individuals who share my interests 🤝🍻.
-                    I like to listen to music 🎶, hit the gym 💪, watch movies 🎬, go for walks 🚶, or catch up on sleep 😴. Yeah, these are the things I do 🙂. Anyway, feel free to reach out to me at 📧 milansonyofficial@gmail.com or dial me at 📞 +91-8075143465 😉.
+            <Reveal>
+                <p className="font-display text-xl sm:text-2xl font-light leading-snug tracking-tight text-balance">
+                    {about.lead}
                 </p>
+            </Reveal>
 
-            </div>
-        </section>
+            <Reveal delay={120} className="mt-8 grid gap-6 sm:grid-cols-2 text-sm sm:text-base text-muted-foreground leading-relaxed">
+                {about.paragraphs.map((paragraph, i) => {
+                    const isLast = i === about.paragraphs.length - 1;
+                    return (
+                        <p key={i}>
+                            {paragraph}
+
+                            {/* the closing line invites people to get in touch */}
+                            {isLast && mail && (
+                                <>
+                                    {" "}Anyway, feel free to reach out to me at{" "}
+                                    <a href={mail.url} className="link-draw text-foreground">{mail.value}</a>
+                                    {phone && (
+                                        <>
+                                            {" "}or dial me at{" "}
+                                            <a href={phone.url} className="link-draw text-foreground whitespace-nowrap">{phone.value}</a>
+                                        </>
+                                    )}.
+                                </>
+                            )}
+                        </p>
+                    );
+                })}
+            </Reveal>
+
+        </Section>
     )
 }
 

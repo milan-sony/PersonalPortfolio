@@ -5,11 +5,87 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/icon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Milan Sony</title>
+  <!-- The %SEO_*% values are filled in from utils/data.js by vite.config.js -->
+  <title>%SEO_TITLE%</title>
+  <meta name="description" content="%SEO_DESCRIPTION%" />
+  <meta name="keywords" content="%SEO_KEYWORDS%" />
+  <meta name="author" content="%SEO_NAME%" />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <link rel="canonical" href="%SITE_URL%/" />
+
+  <meta property="og:type" content="profile" />
+  <meta property="og:site_name" content="%SEO_NAME%" />
+  <meta property="og:title" content="%SEO_TITLE%" />
+  <meta property="og:description" content="%SEO_DESCRIPTION%" />
+  <meta property="og:url" content="%SITE_URL%/" />
+  <meta property="og:image" content="%SEO_IMAGE%" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="%SEO_TITLE%" />
+  <meta property="og:locale" content="en_IN" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="%SEO_TITLE%" />
+  <meta name="twitter:description" content="%SEO_DESCRIPTION%" />
+  <meta name="twitter:image" content="%SEO_IMAGE%" />
+
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#060816" />
+  <meta name="color-scheme" content="dark light" />
+
+  <script type="application/ld+json">%SEO_JSON_LD%</script>
+  <script>
+    // set the theme before first paint so the page doesn't flash
+    (function () {
+      let theme = "auto";
+      try {
+        theme = localStorage.getItem("vite-ui-theme") || "auto";
+      } catch (e) { }
+      if (["dark", "light", "system", "auto"].indexOf(theme) === -1) theme = "auto";
+      if (theme === "auto") {
+        // same hours as src/components/theme-provider.tsx: light from 6am to 6pm
+        const hour = new Date().getHours();
+        theme = hour >= 6 && hour < 18 ? "light" : "dark";
+      }
+      if (theme === "system") {
+        theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.classList.add(theme);
+
+      // same calendar as src/lib/seasons.js: each season starts on the 15th
+      let season = null;
+      try {
+        season = localStorage.getItem("portfolio-season");
+      } catch (e) { }
+      if (["spring", "summer", "monsoon", "autumn", "prewinter", "winter"].indexOf(season) === -1) season = null;
+      if (!season) {
+        const now = new Date();
+        const today = (now.getMonth() + 1) * 100 + now.getDate();
+        season = today >= 1215 ? "winter"
+          : today >= 1015 ? "prewinter"
+            : today >= 815 ? "autumn"
+              : today >= 615 ? "monsoon"
+                : today >= 415 ? "summer"
+                  : today >= 215 ? "spring"
+                    : "winter";
+      }
+      document.documentElement.dataset.season = season;
+    })();
+  </script>
+  <style>
+    html { background: #f2f4fb; }
+    html.dark { background: #060816; }
+  </style>
 </head>
 
 <body>
   <div id="root"></div>
+  <noscript>
+    <h1>%SEO_NAME%</h1>
+    <p>%SEO_DESCRIPTION%</p>
+    <p>This site needs JavaScript to show the full portfolio.</p>
+  </noscript>
   <script>
     // change title when tab changes
     let docTitle = document.title;
