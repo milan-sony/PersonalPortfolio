@@ -56,7 +56,7 @@ export const contact = {
     links: [
         {
             label: "Mail",
-            url: "mailto:milanfrom2001@gmail.com",
+            url: "mailto:milansonyofficial@gmail.com",
             value: "milansonyofficial@gmail.com"
         },
         {

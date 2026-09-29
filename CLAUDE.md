@@ -175,7 +175,6 @@ When testing with Playwright against `npm run dev`, downloading a file into `.pl
 
 ## Open items
 
-- **Email mismatch:** in `contact.links` the Mail entry shows `milansonyofficial@gmail.com` but its `url` is `mailto:milanfrom2001@gmail.com`. Owner to confirm which is right.
 - **Site address:** `seo.siteUrl` uses the Vercel address from the GitHub repo. The GitHub profile lists `milansony.vercel.app`, which serves a different site. Owner to confirm, or add a custom domain.
 - **LinkedIn link** could not be checked automatically (LinkedIn blocks scripted requests).
 
