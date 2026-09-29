@@ -12,7 +12,7 @@ export const navbarLinks = [
 // to fill in the page head, robots.txt and sitemap.xml.
 export const seo = {
     siteUrl: "https://personal-portfolio-plum-sigma-60.vercel.app",
-    title: "Milan Sony | Software Developer and IoT Enthusiast",
+    title: "Milan Sony",
     description: "Portfolio of Milan Sony, a software developer and IoT enthusiast from Kerala, India. Experience, projects, skills and contact details.",
     keywords: ["Milan Sony", "Software Developer", "Web Developer", "IoT", "React", "Node.js", "MERN", "Kerala", "India", "Portfolio"],
     image: "/og-image.png"

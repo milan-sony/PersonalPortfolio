@@ -54,7 +54,7 @@ index.html              Head tags with %SEO_*% placeholders, pre-paint theme/sea
 vite.config.js          seoPlugin: fills the placeholders, emits robots.txt + sitemap.xml
 vercel.json             Sends every path to index.html so the 404 page can render
 utils/data.js           All content
-public/                 Resume, icons, og-image.png, site.webmanifest
+public/                 Resume, favicons, og-image.png, site.webmanifest
 src/
   App.jsx               ThemeProvider > SeasonProvider > PreLoader or Router
   index.css             Base tokens, fonts, shared animation classes
@@ -146,7 +146,20 @@ To change or add a season, three places must agree:
 
 `vite.config.js` imports `utils/data.js` and fills the head at build time, including JSON-LD for a `Person` and a `WebSite`. After changing the domain, update `seo.siteUrl` and rebuild.
 
-`public/og-image.png` (1200×630) and the PNG icons were rendered once from HTML templates and are static files. Regenerate them by hand if the name, title or branding changes.
+`public/og-image.png` (1200×630) was rendered once from an HTML template and is a static file. Regenerate it by hand if the name, title or branding changes.
+
+## Favicons
+
+The icon set in `public/` was supplied by the owner (black serif "MS" on white). Keep these exact file names; they are referenced from two places:
+
+| File | Referenced in | Used for |
+|---|---|---|
+| `favicon.ico` (16, 32, 48) | `index.html`, `site.webmanifest` | Browser tabs, bookmarks, search results |
+| `favicon-32x32.png`, `favicon-16x16.png` | `index.html` | Browser tabs |
+| `apple-touch-icon.png` (180) | `index.html` | iPhone and iPad home screen |
+| `android-chrome-192x192.png`, `android-chrome-512x512.png` | `site.webmanifest` | Android home screen and install prompt |
+
+The manifest icons are marked `"purpose": "any"`, not `maskable`: the letters run close to the edges and Android's maskable crop would cut them off.
 
 ## Checking changes
 
