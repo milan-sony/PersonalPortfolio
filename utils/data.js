@@ -54,17 +54,17 @@ export const contact = {
     phone: "+91 8075143465",
     location: "Changanacherry, Kottayam, Kerala, India",
     links: [
-        {
+    {
             label: "Mail",
             url: "mailto:milansonyofficial@gmail.com",
             value: "milansonyofficial@gmail.com"
         },
-        {
+    {
             label: "Phone",
             url: "tel:+918075143465",
             value: "+91 8075143465"
         },
-        {
+    {
             label: "Location",
             value: "Changanacherry, Kottayam, Kerala, India"
         }
@@ -158,8 +158,20 @@ export const skills = [
 // Work Experience
 export const experiences = [
     {
+        title: "AI Automation Engineer | Full-time (On-site)",
+        years: "September 2026 - Present",
+        company: "Pentagon Solutions",
+        url: "https://www.pentagon-x.com",
+        emoji: "👩🏻‍💻",
+        achievements: [
+            "Working as an AI Automation Engineer at Pentagon X, developing AI-powered features, agents, and agentic workflows using OpenAI and Anthropic Claude, including prompt engineering, tool calling, orchestration, guardrails, and evaluation.",
+            "Building AI automations and integrations using n8n, REST APIs, webhooks, third-party SaaS platforms, and MCP, with emphasis on reliable workflows, error handling, logging, and observability.",
+            "Developing RAG pipelines and AI-enabled software solutions involving document ingestion, chunking, embeddings, vector storage, retrieval evaluation, and integration with custom SaaS and internal AI platforms."
+        ]
+    },
+    {
         title: "Software Developer | Full-time (Remote)",
-        years: "July 2025 - Present",
+        years: "July 2025 - August 2026",
         company: "Johnson & Johnson",
         url: "https://www.jnj.com",
         emoji: "👩🏻‍💻",
