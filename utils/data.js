@@ -68,7 +68,13 @@ export const contact = {
             label: "Location",
             value: "Changanacherry, Kottayam, Kerala, India"
         }
-    ]
+    ],
+    // the form under the links. Messages go to `email` unless CONTACT_TO_EMAIL is set
+    form: {
+        heading: "Or send a message",
+        intro: "Drop a note here and it lands straight in my inbox. I usually reply within a day or two.",
+        button: "Send message"
+    }
 };
 
 // Social media links

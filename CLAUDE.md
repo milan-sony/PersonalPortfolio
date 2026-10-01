@@ -1,6 +1,6 @@
 # Milan Sony — personal portfolio
 
-Single-page portfolio: hero, about, education, skills, experience, projects, contact, plus a 404 page.
+Single-page portfolio: hero, about, education, skills, experience, projects, contact (with a form that emails through Resend), plus a 404 page.
 Deployed on Vercel from GitHub (`milan-sony/PersonalPortfolio`). Live: https://personal-portfolio-plum-sigma-60.vercel.app
 
 ## Commands
@@ -13,7 +13,7 @@ npm run preview   # serve the production build
 npm run lint      # must stay at zero errors
 ```
 
-There is no test runner. Changes are checked in a real browser (see "Checking changes").
+There is no test runner. Changes are checked in a real browser (see "Checking changes"). The contact handler in `server/contact.js` is plain Node and can be exercised with a script that passes a fake `send`.
 
 ## Stack
 
@@ -21,6 +21,7 @@ There is no test runner. Changes are checked in a real browser (see "Checking ch
 - Tailwind CSS v4 via `@tailwindcss/vite`. No `tailwind.config`; tokens are in `src/index.css` under `@theme inline`.
 - shadcn/ui on Radix (`src/components/ui`), lucide-react icons, react-router-dom 7.
 - Lenis for smooth scrolling. Fonts are self-hosted through `@fontsource-variable`.
+- One Vercel serverless function, `api/contact.js`, which sends email with the `resend` SDK.
 - `@` is an alias for `src/`. `utils/data.js` sits outside `src`, so it is imported by relative path.
 
 ## Where content lives
@@ -33,7 +34,7 @@ There is no test runner. Changes are checked in a real browser (see "Checking ch
 | `personalDetails` | Hero name, title, tagline, location, time zone, resume file |
 | `about` | About heading, lead line, paragraphs |
 | `navbarLinks` | Desktop nav and mobile menu. `to` must be `#<section id>` |
-| `contact` | Contact rows. `contact.email` is what the copy button copies |
+| `contact` | Contact rows. `contact.email` is what the copy button copies and where form messages go. `contact.form` is the form heading, intro and button text |
 | `socialLinks` | Footer icons |
 | `educations`, `skills`, `experiences`, `projects` | Their sections |
 
@@ -52,8 +53,12 @@ Rules the components rely on:
 ```
 index.html              Head tags with %SEO_*% placeholders, pre-paint theme/season script
 vite.config.js          seoPlugin: fills the placeholders, emits robots.txt + sitemap.xml
-vercel.json             Sends every path to index.html so the 404 page can render
+vercel.json             Sends every path except /api/* to index.html so the 404 page can render
 utils/data.js           All content
+utils/contact-validation.js  Form rules shared by the browser and the server
+api/contact.js          Vercel function for POST /api/contact (thin wrapper)
+server/contact.js       The contact handler: validation, spam limits, Resend call
+.env.example            Environment variables the contact form needs
 public/                 Resume, favicons, og-image.png, site.webmanifest
 src/
   App.jsx               ThemeProvider > SeasonProvider > PreLoader or Router
@@ -61,6 +66,7 @@ src/
   seasons.css           The six seasonal palettes and emblem animations
   router/Router.jsx     "/" and "*" (404)
   pages/                One folder per section, plus Index (page assembly) and PageNotFound
+    Contact/ContactForm.jsx  The form under the contact links
   components/
     Navbar.jsx          Floating nav, scroll spy, mobile menu
     Section.jsx         Shared section frame: heading left, content right
@@ -128,6 +134,18 @@ To change or add a season, three places must agree:
 
 `--signal` and `--lattice` must be plain colour values, not `color-mix()` or `var()`, because the canvases read them with `getComputedStyle`.
 
+## Contact form
+
+POST `/api/contact` with JSON `{ name, email, message, website, startedAt }`. Replies `{ ok: true }` or `{ ok: false, error, fields? }` with 400 (validation, `fields` holds one message per field), 405, 429 (limits), 502 (Resend failed) or 503 (no API key).
+
+- **One handler, two hosts.** `server/contact.js` exports `handleContact`. `api/contact.js` wraps it for Vercel; `contactApiPlugin` in `vite.config.js` mounts it on `npm run dev` and `npm run preview`, reading `.env` with Vite's `loadEnv`. No Vercel CLI needed locally.
+- **Environment:** `RESEND_API_KEY` (required), `CONTACT_TO_EMAIL` (defaults to `contact.email`), `CONTACT_FROM_EMAIL` (defaults to `Portfolio <onboarding@resend.dev>`, which Resend only delivers to the address that owns the account; verify a domain to send from anything else). Set them in `.env` locally and in the Vercel project settings for the live site. Keys never reach the client bundle: only `VITE_`-prefixed variables do.
+- **Email:** subject is fixed to "New message from my portfolio" in `server/contact.js`. Body lists name, email and message in text and HTML (escaped). Reply-To is the visitor's address.
+- **Validation** lives in `utils/contact-validation.js` and runs in both places: name 1 to 80 characters, a valid email up to 254, message 10 to 2000. Control characters are stripped; line breaks are removed from single-line fields.
+- **Spam limits** are in-memory in `server/contact.js`, so on Vercel each warm instance keeps its own counters: 5 messages per address per 10 minutes, 20 seconds between two messages, an identical message within an hour is reported sent but not re-sent. A filled honeypot (`website`) or a submit under 3 seconds after the form appeared gets a quiet `{ ok: true }`.
+- **Form states:** errors appear on submit and then update as the visitor types; focus moves to the first invalid field; the button is disabled and a ref blocks double clicks while sending; the status line is a polite live region. Text colour for errors is `--destructive`, a plain hex that passes 4.5:1 on all 12 palettes.
+- **Testing without a key** returns 503 with "The contact form isn't set up yet". Mock the route in Playwright to see the success state, or call `handleContact` with a fake `send`.
+
 ## Behaviour worth knowing
 
 - **Reduced motion:** with `prefers-reduced-motion: reduce`, Lenis is not started, both canvases stop animating, and all reveal and emblem animations are off. Keep new animation behind the same check.
@@ -141,6 +159,7 @@ To change or add a season, three places must agree:
 - **Unknown addresses:** `vercel.json` sends every path to the app, which shows the 404 page and returns to the profile after five seconds.
 - **Preloader:** shown for about a second, never more than three.
 - **Tab title:** flips to upside-down text when the tab loses focus (script in `index.html`).
+- **Browser console:** a failed contact submit logs the browser's own "Failed to load resource" line for the 4xx or 5xx response. That is not a script error.
 
 ## SEO
 
@@ -190,12 +209,12 @@ When testing with Playwright against `npm run dev`, downloading a file into `.pl
 
 - **Site address:** `seo.siteUrl` uses the Vercel address from the GitHub repo. The GitHub profile lists `milansony.vercel.app`, which serves a different site. Owner to confirm, or add a custom domain.
 - **LinkedIn link** could not be checked automatically (LinkedIn blocks scripted requests).
+- **Contact form on Vercel:** `vercel.json` now excludes `/api/` from the SPA rewrite and `RESEND_API_KEY` must be added in the Vercel project settings. Neither has been checked on a live deploy yet.
 
 ## Ideas for later
 
 - A Certifications or Blog section: copy a simple section such as `Education.jsx`, add its data to `utils/data.js`, add it to `Index.jsx` and `navbarLinks`. More than about eight nav links will crowd the bar at tablet width.
 - Project screenshots or thumbnails in the project cards.
-- A contact form.
 - A setting to turn the seasonal particles off.
 - Theme by real sunrise and sunset instead of fixed hours.
 - A README.md for the GitHub repository (there is none).

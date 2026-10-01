@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Copy, Check } from "lucide-react";
 import Reveal from '../../components/Reveal';
+import ContactForm from './ContactForm';
 import { getContactIcon } from "@/lib/icons";
 import { contact } from "../../../utils/data";
 
@@ -74,6 +75,23 @@ function Contact() {
                             </Reveal>
                         );
                     })}
+                </div>
+
+                {/* The form, framed like the other sections: heading on the left, content on the right */}
+                <div className="mt-16 grid gap-10 lg:grid-cols-12 lg:gap-12">
+                    <Reveal className="lg:col-span-4">
+                        <h3 className="font-display text-2xl sm:text-3xl font-light tracking-tight text-balance">
+                            {contact.form.heading}
+                        </h3>
+
+                        <p className="mt-4 max-w-xs text-sm sm:text-base text-muted-foreground leading-relaxed">
+                            {contact.form.intro}
+                        </p>
+                    </Reveal>
+
+                    <Reveal delay={120} className="lg:col-span-8">
+                        <ContactForm />
+                    </Reveal>
                 </div>
 
             </div>
