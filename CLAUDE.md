@@ -54,7 +54,7 @@ Rules the components rely on:
 ```
 index.html              Head tags with %SEO_*% placeholders, pre-paint theme/season script
 vite.config.js          seoPlugin: fills the placeholders, emits robots.txt + sitemap.xml
-vercel.json             Sends every path except /api/* to index.html so the 404 page can render
+vercel.json             Sends every path except /api/* to index.html so the 404 page can render; caches /assets/* for a year
 utils/data.js           All content
 utils/contact-validation.js  Form rules shared by the browser and the server
 api/contact.js          Vercel function for POST /api/contact (thin wrapper)
@@ -245,6 +245,9 @@ When testing with Playwright against `npm run dev`, downloading a file into `.pl
 - `utils/data.js` uses Windows line endings (CRLF). Scripted multi-line find-and-replace needs to account for that.
 
 ## Open items
+
+- **npm audit:** 6 moderate warnings remain, all one advisory (GHSA-g3hv-75wg-m249) in `minimatch`, used only by ESLint. No fix exists yet: ESLint 9 needs minimatch 3 (11 drops the default export it imports), and even ESLint 10.14 depends on an affected 10.x. Dev only, never shipped. Recheck when ESLint moves to minimatch 11. Everything else was fixed with `npm audit fix` on 3 Nov 2026.
+- **Caching:** `vercel.json` marks `/assets/*` as `immutable` for a year. That is only safe because Vite puts a content hash in every file name there. Never put an unhashed file in `/assets/`; files in `public/` (resume, favicons, og-image) keep the default revalidation.
 
 - **Site address:** `seo.siteUrl` uses the Vercel address from the GitHub repo. The GitHub profile lists `milansony.vercel.app`, which serves a different site. Owner to confirm, or add a custom domain.
 - **LinkedIn link** could not be checked automatically (LinkedIn blocks scripted requests).
