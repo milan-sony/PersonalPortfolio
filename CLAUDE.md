@@ -171,7 +171,7 @@ The hero has one "Resume" button. A plain click opens `ResumeViewer.jsx`; Ctrl, 
 - **Closing:** only the Close button closes it, at the owner's request. Escape, the Android back gesture and clicks outside the panel are ignored, and if the dialog closes any other way (Chrome closes it anyway on a second Escape without a click in between) it reopens. Focus starts on Close and returns to the Resume button.
 - **Layering:** a native `<dialog>` opened with `showModal()`, rendered into `<body>` through a portal so the hero's scroll fade and transform don't affect it. It locks page scroll and pauses Lenis while open; its scroll area has `data-lenis-prevent` and a stable scrollbar gutter.
 - **Phones:** full screen below 640px, tighter page margins, header is title, -, +, Download, Close.
-- **Not yet tested:** touch scrolling on a real phone (synthetic touch doesn't scroll in headless Chromium), Safari, Firefox, and the `.mjs` worker's content type on Vercel.
+- **Checked live** (3 Nov 2026): Vercel serves the `.mjs` worker as `application/javascript` with brotli; first page in about 1.3s on desktop and 0.9s on a phone emulation. **Not yet tested:** touch scrolling on a real phone (synthetic touch doesn't scroll in headless Chromium), Safari, Firefox.
 
 ## Contact form
 
