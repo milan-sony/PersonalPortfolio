@@ -54,7 +54,7 @@ Rules the components rely on:
 ```
 index.html              Head tags with %SEO_*% placeholders, pre-paint theme/season script
 vite.config.js          seoPlugin: fills the placeholders, emits robots.txt + sitemap.xml
-vercel.json             Sends every path except /api/* to index.html so the 404 page can render; caches /assets/* for a year
+vercel.json             Sends every path except /api/* and /assets/* to index.html so the 404 page can render; caches /assets/* for a year
 utils/data.js           All content
 utils/contact-validation.js  Form rules shared by the browser and the server
 api/contact.js          Vercel function for POST /api/contact (thin wrapper)
@@ -76,6 +76,7 @@ src/
     SeasonalAmbience.jsx  Petals, rain, leaves, mist, snow (canvas, behind content)
     ScrollProgress.jsx  Reading progress line
     ResumeViewer.jsx    In-page PDF viewer (with resume-viewer.css), lazy-loaded from Hero
+    ResumeErrorBoundary.jsx  Catches a viewer that fails to load; shows ResumeUnavailable.jsx
     season-provider.jsx   Picks the season by date, remembers a manual choice
     season-switcher.jsx   Season menu in the nav
     sound-toggle.jsx      Ambient sound button in the nav: picks day or night, starts the sound
@@ -170,6 +171,7 @@ The hero has one "Resume" button. A plain click opens `ResumeViewer.jsx`; Ctrl, 
 - **Drawing:** each page is a canvas sized to fit the panel (up to 860px wide at 100%), with PDF.js's text layer on top so text can be selected, and the PDF's own links as real links. Zoom runs 75% to 200%; the percentage (shown from 640px up) resets to fit. Canvases are capped at 12 million pixels so zoomed pages on 3x phones stay under iOS limits. The text-layer CSS in `resume-viewer.css` is trimmed from `pdfjs-dist/web/pdf_viewer.css`. PDF.js 6 has no `convertToViewportRectangle`; links use `convertToViewportPoint` on both corners.
 - **Closing:** only the Close button closes it, at the owner's request. Escape, the Android back gesture and clicks outside the panel are ignored, and if the dialog closes any other way (Chrome closes it anyway on a second Escape without a click in between) it reopens. Focus starts on Close and returns to the Resume button.
 - **Layering:** a native `<dialog>` opened with `showModal()`, rendered into `<body>` through a portal so the hero's scroll fade and transform don't affect it. It locks page scroll and pauses Lenis while open; its scroll area has `data-lenis-prevent` and a stable scrollbar gutter.
+- **When it fails to load:** a dropped connection, or a tab left open across a deploy (the old viewer file is gone), used to blank the whole page. `ResumeErrorBoundary` now shows "Couldn't open the resume" with Open the PDF and Download (the PDF in `public/` keeps its address across deploys). React.lazy and the PDF.js loader both forget a failed download, so the next click on Resume tries again. Missing files under `/assets/` get a real 404 rather than index.html, so they can never be cached for a year as HTML. Test by aborting `/assets/ResumeViewer-*.js` and `/assets/pdf-*.js` with Playwright `page.route`.
 - **Phones:** full screen below 640px, tighter page margins, header is title, -, +, Download, Close.
 - **Checked live** (3 Nov 2026): Vercel serves the `.mjs` worker as `application/javascript` with brotli; first page in about 1.3s on desktop and 0.9s on a phone emulation. **Not yet tested:** touch scrolling on a real phone (synthetic touch doesn't scroll in headless Chromium), Safari, Firefox.
 

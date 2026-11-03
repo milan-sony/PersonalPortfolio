@@ -6,6 +6,7 @@ import SignalLattice from '../../components/SignalLattice';
 import { experiences, personalDetails } from "../../../utils/data";
 import { useSeason } from "@/lib/season-context";
 import { loadResumeViewer, prefetchResume } from "@/lib/resume-prefetch";
+import ResumeErrorBoundary from "@/components/ResumeErrorBoundary";
 
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
     hour: "2-digit",
@@ -28,7 +29,13 @@ function LocalTime() {
 // The viewer brings PDF.js with it, so it loads only when wanted. Pointing at,
 // focusing or touching the Resume button starts the viewer code, the PDF.js
 // worker and the PDF downloading together, a moment before the click.
-const ResumeViewer = lazy(loadResumeViewer);
+let ResumeViewer = lazy(loadResumeViewer);
+
+// React.lazy remembers a failed download for good, so after a failure the next
+// open starts from a fresh one and tries again
+const retryResumeViewer = () => {
+    ResumeViewer = lazy(loadResumeViewer);
+};
 
 function ResumeLoading() {
     return (
@@ -153,13 +160,21 @@ function Hero() {
 
                 {/* rendered on <body>, clear of the hero's scroll fade and transform */}
                 {viewingResume && createPortal(
-                    <Suspense fallback={<ResumeLoading />}>
-                        <ResumeViewer
-                            file={resume.file}
-                            downloadName={resume.downloadName}
-                            onClose={() => setViewingResume(false)}
-                        />
-                    </Suspense>,
+                    // if the viewer can't load, offer the PDF directly instead of blanking the page
+                    <ResumeErrorBoundary
+                        file={resume.file}
+                        downloadName={resume.downloadName}
+                        onError={retryResumeViewer}
+                        onClose={() => setViewingResume(false)}
+                    >
+                        <Suspense fallback={<ResumeLoading />}>
+                            <ResumeViewer
+                                file={resume.file}
+                                downloadName={resume.downloadName}
+                                onClose={() => setViewingResume(false)}
+                            />
+                        </Suspense>
+                    </ResumeErrorBoundary>,
                     document.body
                 )}
 

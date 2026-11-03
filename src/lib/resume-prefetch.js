@@ -36,6 +36,10 @@ function loadPdfjs() {
         if (port) module.GlobalWorkerOptions.workerPort = port;
         return module;
     });
+    // a failed download is forgotten, so the next open tries again
+    pdfjs.catch(() => {
+        pdfjs = null;
+    });
     return pdfjs;
 }
 
@@ -70,7 +74,9 @@ export function getResumeDocument(url) {
     return documents.get(url);
 }
 
+// Only a head start: if something fails here, opening the viewer tries again
+// and shows its own error, so these failures are deliberately left quiet
 export function prefetchResume(url) {
-    loadResumeViewer();
+    loadResumeViewer().catch(() => { });
     getResumeDocument(url).catch(() => { });
 }
