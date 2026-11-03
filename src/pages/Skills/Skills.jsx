@@ -19,7 +19,8 @@ function Skills() {
                             {skill.category}
                         </h3>
 
-                        <ul className="flex flex-wrap gap-2">
+                        {/* self-start: a two-line category would otherwise stretch the row and every chip in it */}
+                        <ul className="flex flex-wrap gap-2 self-start">
                             {skill.items.map((item, j) => (
                                 <li
                                     key={j}
