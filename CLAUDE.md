@@ -21,6 +21,7 @@ There is no test runner. Changes are checked in a real browser (see "Checking ch
 - Tailwind CSS v4 via `@tailwindcss/vite`. No `tailwind.config`; tokens are in `src/index.css` under `@theme inline`.
 - shadcn/ui on Radix (`src/components/ui`), lucide-react icons, react-router-dom 7.
 - Lenis for smooth scrolling. Fonts are self-hosted through `@fontsource-variable`.
+- PDF.js (`pdfjs-dist`, pinned to 6.4.299, legacy build) for the resume viewer, loaded only when it opens.
 - One Vercel serverless function, `api/contact.js`, which sends email with the `resend` SDK.
 - `@` is an alias for `src/`. `utils/data.js` sits outside `src`, so it is imported by relative path.
 
@@ -46,7 +47,7 @@ Rules the components rely on:
 - The first project card is full width. With an even number of projects the last one is too.
 - The About closing sentence ("feel free to reach out…") is built from the contact links labelled `Mail` and `Phone`.
 - Unknown contact labels and social icon names fall back to a generic icon (`src/lib/icons.js`). Add new icons there.
-- The resume is `public/Resume-Milan_Sony.pdf`. Replace the file, or change `personalDetails.resume`.
+- The resume is `public/Resume-Milan_Sony.pdf`. Replace the file, or change `personalDetails.resume`. The hero "Resume" button opens it in the in-page viewer; `downloadName` is the file name its Download button saves.
 
 ## Structure
 
@@ -74,16 +75,20 @@ src/
     SignalLattice.jsx   Hero dot grid (canvas) that reacts to the pointer
     SeasonalAmbience.jsx  Petals, rain, leaves, mist, snow (canvas, behind content)
     ScrollProgress.jsx  Reading progress line
+    ResumeViewer.jsx    In-page PDF viewer (with resume-viewer.css), lazy-loaded from Hero
     season-provider.jsx   Picks the season by date, remembers a manual choice
     season-switcher.jsx   Season menu in the nav
+    sound-toggle.jsx      Ambient sound button in the nav: picks day or night, starts the sound
     theme-provider.tsx    Picks light or dark by time of day, remembers a manual choice
     theme-toggle.tsx      Theme menu in the nav (despite the name, it is a menu, not a toggle)
   lib/
     seasons.js          Season dates, weather text, emblems, particle settings
     season-context.js   useSeason hook
     smooth-scroll.js    Lenis wrapper: start, pause, resume, scrollToTop
+    ambient-sound.js    Web Audio player for the seasonal sound: gapless loop, fades, crossfades
     icons.js            Icon lookups with fallbacks
   assets/seasons/       Hand-drawn SVGs used as emblems and particles
+  assets/sounds/        A day and a night loop per season, plus CREDITS.md with the sources
 ```
 
 Not used by the page, left from the original project: `components/Layout.jsx`, `ui/card.tsx`, `ui/navigation-menu.tsx`, `assets/react.svg`.
@@ -128,11 +133,45 @@ Seasons start on the 15th, using the visitor's own date:
 
 To change or add a season, three places must agree:
 
-1. `src/lib/seasons.js`: the entry in `SEASONS` (id, start date, weather, emblem, `ambience`).
+1. `src/lib/seasons.js`: the entry in `SEASONS` (id, start date, weather, emblem, `ambience`, `sound`).
 2. `src/seasons.css`: two blocks, `html[data-season="id"]` and `html.dark[data-season="id"]`, each setting the eight seed variables.
 3. `index.html`: the inline pre-paint script, which repeats the date logic and the list of valid ids so the right palette shows before React loads.
 
 `--signal` and `--lattice` must be plain colour values, not `color-mix()` or `var()`, because the canvases read them with `getComputedStyle`.
+
+## Ambient sound
+
+Each season has a looping background recording for day (light theme) and one for night (dark theme):
+
+| Season | Day | Night |
+|---|---|---|
+| `spring` | Birdsong | Gentle crickets |
+| `summer` | Dry wind, faint cicadas | Crickets and katydids |
+| `monsoon` | Heavy rain | Heavy rain with frogs |
+| `autumn` | Wind in dry leaves over light rain | Light rain with crickets |
+| `prewinter` | Soft breeze, faint birdsong | Calm crickets, soft breeze |
+| `winter` | Cold wind | Muffled cold wind, a distant owl |
+
+- **Files** are in `src/assets/sounds/` as `<season>-day.mp3` and `<season>-night.mp3`, imported in `seasons.js` as `sound: { day, night }`. All are CC0 recordings from Freesound; `CREDITS.md` lists the sources and how each was mixed. Day files are matched to -23 LUFS, night files to -25 LUFS. Only the file being played is downloaded, and only once sound starts.
+- **Day or night** follows the `dark` class on `<html>` (a MutationObserver in `sound-toggle.jsx`), so it changes with the theme menu and with the automatic 6am/6pm switch. The change crossfades.
+- **Starting:** on load, `canPlayWithoutGesture` asks whether the browser allows sound before any click (`navigator.getAutoplayPolicy` in Firefox, otherwise playing a tenth of a second of silence). Usually it doesn't: browsers only allow it for sites a visitor often plays media on (Chrome) or has set to "Sound: Allow". Then sound starts on the first click, tap or key press anywhere; scrolling doesn't count. A first click on the sound button itself mutes without playing anything. Asking first avoids Chrome's "AudioContext was not allowed to start" warning.
+- **Hint:** while sound is on but waiting for that first click, a ring in the accent colour pulses around the speaker (`.sound-hint` in `index.css`; a still ring with reduced motion).
+- **Button:** speaker icon in the nav, before the season menu, `aria-pressed`. Muting saves `portfolio-sound` = `off` in `localStorage`; turning it back on removes the key. Sound is on by default.
+- **Player** (`src/lib/ambient-sound.js`): Web Audio, not `<audio loop>`, which leaves a gap at the seam. Each pass is its own buffer source and overlaps the next by 4 seconds with an equal-power crossfade, so the files don't need to loop on their own. Changing season or day/night crossfades over 2.5 seconds. Volume is `VOLUME` (0.5) at the top of the file.
+- **Hidden tab:** fades out and suspends the audio clock, then fades back in where it left off.
+- **Testing:** the player keeps its state inside the module. In Playwright, patch `AudioContext.prototype.createGain` and `createBufferSource` in an init script to see the context, gains and scheduled passes. Playwright's Chromium allows autoplay, so to test a first visit, also make `HTMLMediaElement.prototype.play` reject with `NotAllowedError`. Not yet tested: Safari, Firefox, real phones.
+
+## Resume viewer
+
+The hero has one "Resume" button. A plain click opens `ResumeViewer.jsx`; Ctrl, Cmd or middle click still opens the PDF in a new tab, because the button is a real link to the file.
+
+- **Loading:** `src/lib/resume-prefetch.js` starts everything when the visitor points at, focuses or touches the button: the viewer code (2.6 KB gzipped), PDF.js (151 KB gzipped), its worker (1.3 MB, about 390 KB gzipped) and the PDF, side by side. It also reads the PDF and prepares page 1, which is where PDF.js converts the fonts (this LaTeX resume embeds its fonts, and that conversion is most of the first-page time). The worker and the read document are kept for the visit, so a second open only redraws. Pages appear one by one as they are drawn; the text layer and links follow. Canvases draw at no more than 2x pixel density. It uses the legacy build: the modern one needs `Map.getOrInsertComputed` and `Math.sumPrecise`, which only the newest browsers have.
+- **Timing** (production build, medians of three, 2 Nov 2026): phone simulation (fast 4G, CPU 4x slower) 3.7s to the first page, 1.7s to reopen; desktop with the pointer resting on the button 0.4s before clicking 1.2s, reopen 0.4s. `npm run dev` is much slower (unminified 7 MB worker, React dev mode runs effects twice), so judge speed with `npm run build` and `npm run preview`.
+- **Drawing:** each page is a canvas sized to fit the panel (up to 860px wide at 100%), with PDF.js's text layer on top so text can be selected, and the PDF's own links as real links. Zoom runs 75% to 200%; the percentage (shown from 640px up) resets to fit. Canvases are capped at 12 million pixels so zoomed pages on 3x phones stay under iOS limits. The text-layer CSS in `resume-viewer.css` is trimmed from `pdfjs-dist/web/pdf_viewer.css`. PDF.js 6 has no `convertToViewportRectangle`; links use `convertToViewportPoint` on both corners.
+- **Closing:** only the Close button closes it, at the owner's request. Escape, the Android back gesture and clicks outside the panel are ignored, and if the dialog closes any other way (Chrome closes it anyway on a second Escape without a click in between) it reopens. Focus starts on Close and returns to the Resume button.
+- **Layering:** a native `<dialog>` opened with `showModal()`, rendered into `<body>` through a portal so the hero's scroll fade and transform don't affect it. It locks page scroll and pauses Lenis while open; its scroll area has `data-lenis-prevent` and a stable scrollbar gutter.
+- **Phones:** full screen below 640px, tighter page margins, header is title, -, +, Download, Close.
+- **Not yet tested:** touch scrolling on a real phone (synthetic touch doesn't scroll in headless Chromium), Safari, Firefox, and the `.mjs` worker's content type on Vercel.
 
 ## Contact form
 

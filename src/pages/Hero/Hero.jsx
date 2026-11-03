@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react'
+import { createPortal } from "react-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowDown, Download } from "lucide-react";
+import { ArrowDown, FileText } from "lucide-react";
 import SignalLattice from '../../components/SignalLattice';
 import { experiences, personalDetails } from "../../../utils/data";
 import { useSeason } from "@/lib/season-context";
+import { loadResumeViewer, prefetchResume } from "@/lib/resume-prefetch";
 
 const timeFormat = new Intl.DateTimeFormat("en-GB", {
     hour: "2-digit",
@@ -23,12 +25,37 @@ function LocalTime() {
     return <span className="tabular-nums">{time} {personalDetails.timeZoneLabel}</span>;
 }
 
+// The viewer brings PDF.js with it, so it loads only when wanted. Pointing at,
+// focusing or touching the Resume button starts the viewer code, the PDF.js
+// worker and the PDF downloading together, a moment before the click.
+const ResumeViewer = lazy(loadResumeViewer);
+
+function ResumeLoading() {
+    return (
+        <div className="fixed inset-0 z-[80] grid place-items-center bg-black/50 backdrop-blur-sm" role="status">
+            <span className="flex items-center gap-3 rounded-full bg-card px-5 py-2.5 text-sm text-muted-foreground shadow-lg">
+                <span className="live-dot" /> Loading the resume
+            </span>
+        </div>
+    );
+}
+
 function Hero() {
     // the first role still marked as "Present", or simply the latest one
     const currentJob = experiences.find((exp) => exp.years.includes("Present")) ?? experiences[0];
     const currentRole = currentJob?.title.split("|")[0].trim();
     const { tagline, resume } = personalDetails;
     const contentRef = useRef(null);
+    const [viewingResume, setViewingResume] = useState(false);
+
+    // A plain click opens the viewer. Ctrl, Cmd or middle click still opens the
+    // PDF in a new tab, since the button is a real link to the file.
+    const openResume = (event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        event.preventDefault();
+        prefetchResume(resume.file);
+        setViewingResume(true);
+    };
 
     // The hero content eases back and fades as the page scrolls away from it
     useEffect(() => {
@@ -109,11 +136,32 @@ function Hero() {
                         <a href="#contact">Contact me</a>
                     </Button>
                     <Button size="lg" variant="outline" className="rounded-full px-6 bg-transparent backdrop-blur-sm focus-visible:outline-solid focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-signal" asChild>
-                        <a href={resume.file} target="_blank" rel="noopener noreferrer" download={resume.downloadName}>
-                            <Download /> Download resume
+                        <a
+                            href={resume.file}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={openResume}
+                            onPointerEnter={() => prefetchResume(resume.file)}
+                            onPointerDown={() => prefetchResume(resume.file)}
+                            onFocus={() => prefetchResume(resume.file)}
+                            aria-haspopup="dialog"
+                        >
+                            <FileText /> Resume
                         </a>
                     </Button>
                 </div>
+
+                {/* rendered on <body>, clear of the hero's scroll fade and transform */}
+                {viewingResume && createPortal(
+                    <Suspense fallback={<ResumeLoading />}>
+                        <ResumeViewer
+                            file={resume.file}
+                            downloadName={resume.downloadName}
+                            onClose={() => setViewingResume(false)}
+                        />
+                    </Suspense>,
+                    document.body
+                )}
 
             </div>
 

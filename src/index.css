@@ -283,6 +283,22 @@
     transform-origin: left;
     animation: load 0.9s var(--ease-out-expo) forwards;
   }
+
+  /* the footer heart: two quick beats, then a rest, like a pulse */
+  .heartbeat {
+    transform-origin: center;
+    animation: heartbeat 1.6s ease-in-out infinite;
+  }
+
+  /* soft ring around the speaker while the sound waits for a first click */
+  .sound-hint {
+    position: absolute;
+    inset: 0.25rem;
+    border-radius: 999px;
+    border: 1px solid var(--signal);
+    pointer-events: none;
+    animation: sound-hint 2.8s ease-out infinite;
+  }
 }
 
 @keyframes rise {
@@ -307,6 +323,42 @@
   70%,
   100% {
     transform: scale(3);
+    opacity: 0;
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  40%,
+  100% {
+    transform: scale(1);
+  }
+
+  10% {
+    transform: scale(1.22);
+  }
+
+  20% {
+    transform: scale(1.05);
+  }
+
+  30% {
+    transform: scale(1.18);
+  }
+}
+
+@keyframes sound-hint {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.9;
+  }
+
+  100% {
+    transform: scale(1.35);
     opacity: 0;
   }
 }
@@ -339,5 +391,15 @@
   .live-dot::after {
     animation: none;
     opacity: 0;
+  }
+
+  .heartbeat {
+    animation: none;
+  }
+
+  /* a still ring keeps the hint without the movement */
+  .sound-hint {
+    animation: none;
+    opacity: 0.6;
   }
 }

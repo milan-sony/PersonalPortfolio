@@ -1,4 +1,5 @@
 import React from 'react'
+import { Heart } from "lucide-react";
 import { getSocialIcon } from "@/lib/icons";
 import { personalDetails, socialLinks } from "../../utils/data";
 
@@ -15,7 +16,10 @@ function Footer() {
                     </p>
 
                     <p className="text-xs text-muted-foreground">
-                        Built with React, Tailwind CSS and shadcn/ui.
+                        Built with{" "}
+                        {/* the accent colour, so the heart follows the theme and season */}
+                        <Heart aria-hidden="true" className="heartbeat inline-block size-3.5 -mt-0.5 fill-signal text-signal" />
+                        <span className="sr-only">love</span>, React, Tailwind CSS, and shadcn/ui.
                     </p>
                 </div>
 

@@ -8,13 +8,27 @@ import autumnLeafGold from "@/assets/seasons/autumn-leaf-gold.svg";
 import prewinterMist from "@/assets/seasons/prewinter-mist.svg";
 import prewinterDew from "@/assets/seasons/prewinter-dew.svg";
 import winterSnowflake from "@/assets/seasons/winter-snowflake.svg";
+import springDay from "@/assets/sounds/spring-day.mp3";
+import springNight from "@/assets/sounds/spring-night.mp3";
+import summerDay from "@/assets/sounds/summer-day.mp3";
+import summerNight from "@/assets/sounds/summer-night.mp3";
+import monsoonDay from "@/assets/sounds/monsoon-day.mp3";
+import monsoonNight from "@/assets/sounds/monsoon-night.mp3";
+import autumnDay from "@/assets/sounds/autumn-day.mp3";
+import autumnNight from "@/assets/sounds/autumn-night.mp3";
+import prewinterDay from "@/assets/sounds/prewinter-day.mp3";
+import prewinterNight from "@/assets/sounds/prewinter-night.mp3";
+import winterDay from "@/assets/sounds/winter-day.mp3";
+import winterNight from "@/assets/sounds/winter-night.mp3";
 
 export const SEASON_STORAGE_KEY = "portfolio-season";
 
 // The six seasons, each starting on the 15th of its first month. The weather
 // notes follow India's climate: a dry hot summer, the southwest monsoon, its
 // slow retreat, then clear skies into a cool dry winter.
-// `motion` picks the emblem animation, `ambience` drives what is in the air.
+// `motion` picks the emblem animation, `ambience` drives what is in the air,
+// `sound` holds the looping background recordings, one for the light theme (day)
+// and one for the dark theme (night). Sources are in src/assets/sounds/CREDITS.md.
 export const SEASONS = [
     {
         id: "spring",
@@ -24,6 +38,7 @@ export const SEASONS = [
         weather: "Mild days, trees in bloom",
         emblem: springBlossom,
         motion: "emblem-sway",
+        sound: { day: springDay, night: springNight },
         ambience: {
             drift: {
                 sprites: [springPetal],
@@ -40,6 +55,7 @@ export const SEASONS = [
         weather: "Hot days and dry winds",
         emblem: summerSun,
         motion: "emblem-spin",
+        sound: { day: summerDay, night: summerNight },
         ambience: {
             // dust and heat carried sideways on the loo
             drift: {
@@ -57,6 +73,7 @@ export const SEASONS = [
         weather: "Heavy rain, humid air",
         emblem: monsoonCloud,
         motion: "emblem-float",
+        sound: { day: monsoonDay, night: monsoonNight },
         ambience: {
             rain: { density: 90, length: [14, 28], vy: [620, 900], slant: -0.18, alpha: [0.18, 0.45] },
         },
@@ -69,6 +86,7 @@ export const SEASONS = [
         weather: "The monsoon retreats, skies clear",
         emblem: autumnLeaf,
         motion: "emblem-sway",
+        sound: { day: autumnDay, night: autumnNight },
         ambience: {
             drift: {
                 sprites: [autumnLeaf, autumnLeafGold],
@@ -87,6 +105,7 @@ export const SEASONS = [
         weather: "Clear skies, misty mornings",
         emblem: prewinterMist,
         motion: "emblem-float",
+        sound: { day: prewinterDay, night: prewinterNight },
         ambience: {
             drift: {
                 sprites: [prewinterDew],
@@ -104,6 +123,7 @@ export const SEASONS = [
         weather: "Cool and dry, snow in the Himalayas",
         emblem: winterSnowflake,
         motion: "emblem-spin",
+        sound: { day: winterDay, night: winterNight },
         ambience: {
             drift: {
                 sprites: [winterSnowflake],

@@ -1,0 +1,149 @@
+/* The resume viewer. Loaded with the viewer itself, never on first paint. */
+
+.resume-dialog[open] {
+    animation: resume-in 0.35s var(--ease-out-expo, ease-out);
+}
+
+.resume-dialog[open]::backdrop {
+    animation: resume-fade 0.35s ease-out;
+}
+
+@keyframes resume-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+}
+
+@keyframes resume-fade {
+    from {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .resume-dialog[open],
+    .resume-dialog[open]::backdrop {
+        animation: none;
+    }
+}
+
+.resume-pages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    /* zoomed pages wider than the panel scroll sideways from their left edge */
+    width: max-content;
+    min-width: 100%;
+    padding: 0.625rem;
+}
+
+@media (min-width: 640px) {
+    .resume-pages {
+        padding: 1rem;
+    }
+}
+
+/* A sheet of paper: always white, whatever the theme */
+.resume-sheet {
+    position: relative;
+    flex: none;
+    background: #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 8px 24px rgb(0 0 0 / 10%);
+}
+
+.resume-sheet canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.resume-link {
+    position: absolute;
+    z-index: 2;
+    border-radius: 2px;
+}
+
+.resume-link:hover {
+    background: color-mix(in srgb, var(--signal) 14%, transparent);
+}
+
+.resume-link:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+}
+
+/* PDF.js text layer: invisible text over the canvas, there to be selected and
+   copied. Trimmed from pdfjs-dist/web/pdf_viewer.css. */
+.resume-sheet .textLayer {
+    position: absolute;
+    inset: 0;
+    overflow: clip;
+    line-height: 1;
+    text-align: initial;
+    letter-spacing: normal;
+    word-spacing: normal;
+    text-size-adjust: none;
+    forced-color-adjust: none;
+    transform-origin: 0 0;
+    z-index: 1;
+    --scale-round-x: 1px;
+    --scale-round-y: 1px;
+    --min-font-size: 1;
+    --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+    --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+
+.resume-sheet .textLayer :is(span, br) {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+}
+
+.resume-sheet .textLayer > :not(.markedContent),
+.resume-sheet .textLayer .markedContent span:not(.markedContent) {
+    z-index: 1;
+    --font-height: 0;
+    font-size: calc(var(--text-scale-factor) * var(--font-height));
+    --scale-x: 1;
+    --rotate: 0deg;
+    transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+
+.resume-sheet .textLayer .markedContent {
+    display: contents;
+}
+
+.resume-sheet .textLayer ::selection {
+    background: color-mix(in srgb, var(--signal) 30%, transparent);
+    color: transparent;
+}
+
+.resume-sheet .textLayer br::selection {
+    background: transparent;
+}
+
+.resume-sheet .textLayer .endOfContent {
+    display: block;
+    position: absolute;
+    inset: 100% 0 0;
+    z-index: 0;
+    cursor: default;
+    user-select: none;
+}
+
+.resume-sheet .textLayer.selecting .endOfContent {
+    top: 0;
+}
+
+/* A thin scrollbar in the theme's colours. The stable gutter keeps the width
+   the same once the scrollbar appears, so a page drawn to fit never ends up a
+   scrollbar too wide. */
+.resume-scroll {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--muted-foreground) 45%, transparent) transparent;
+}

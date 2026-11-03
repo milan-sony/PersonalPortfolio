@@ -2,6 +2,7 @@ import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
 import { SeasonSwitcher } from "./season-switcher";
+import { SoundToggle } from "./sound-toggle";
 import { navbarLinks } from "../../utils/data";
 import { pauseScroll, resumeScroll } from "@/lib/smooth-scroll";
 
@@ -145,6 +146,7 @@ export default function Navbar() {
                     </ul>
 
                     <div className="flex items-center gap-1">
+                        <SoundToggle />
                         <SeasonSwitcher />
                         <ThemeToggle />
 
